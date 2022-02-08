@@ -39,6 +39,6 @@ A cron job will run daily, executing analysis of the daily visitors, then emaili
 ## Built With
 
 * [PHP](https://www.php.net/docs.php) - PHP 8
-* [Jquery] - JQuery
+* [Jquery]
 * [JS]
 * [AJAX]

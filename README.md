@@ -1,5 +1,7 @@
 # WP Local Analytics plugin.
 
+*run user analytics within your system and track user data inside your database.*
+
 ## Installing
 
 Go to the plugin page from the WordPress Plugin Directory website.

@@ -33,10 +33,11 @@ class web_db_manager {
     }
     // Get the first row that matches the query
     function get_one_row($query) {
-        foreach ($this->query($query) as $row) {
-            return $row;
-        }
-        return null;
+        global $wpdb;
+        $row = $wpdb->get_row( $query );
+        //object to array
+        $row = (array) $row;
+        return $row;
     }
     // Get the first row that matches the query
     function first($table, $keys, $filter) {

@@ -16,18 +16,23 @@ function ortho_apisettings_settings_panel(){
     require('admin-interface.php');
 }
 
+function reload_page() {
+    echo '<script type="text/javascript">';
+    echo 'window.location.reload();';
+    echo '</script>';
+}
 
 if(isset($_POST['article_form_submit'])) {
     save_creds(1);
-    echo "<script>location.reload();</script>";
+    reload_page();
 }
 if(isset($_POST['reset_password'])) {
     save_creds(3);
-    echo "<script>location.reload();</script>";
+    reload_page();
 }
 if(isset($_POST['article_form_update_mail'])) {
     save_creds(0);
-    echo "<script>location.reload();</script>";
+    reload_page();
 }
 
 //Add action to wordpress

@@ -17,6 +17,10 @@ include_once("includes/mail/Mail.php");
 // Analytics
 include "includes/analytics/webanalytics.php";
 include_once("includes/analytics/websettings.php");
+// Graphs
+require_once ('includes/jpgraph/src/jpgraph.php');
+require_once ('includes/jpgraph/src/jpgraph_line.php');
+require_once ('includes/jpgraph/src/jpgraph_bar.php');
 // Cron
 include "includes/cron/Cron.php";
 ?>

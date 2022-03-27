@@ -18,16 +18,35 @@ function _analytics_mail_options_page()   {
 }
 
 add_action("admin_head",'ortho_admin_global_css');
+add_action("admin_head",'ortho_admin_global_js');
 
-function log_fun() {
-    echo "<script>console.log('test');</script>";
+function admin_ajax(){
+    ?>
+<script>
+var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+</script>
+<?php
+    }
+add_action('admin_head', 'admin_ajax');
+
+function login_check()
+{
+    $username = strval($_REQUEST['username']);
+    $password = strval($_REQUEST['password']);
+    if ($username == 'admin' && $password == 'admin') {
+        echo 'true';
+    } else {
+        echo 'false';
+    }
 }
+
+add_action('wp_ajax_nopriv_login_check', 'login_check'); 
+add_action('wp_ajax_login_check', 'login_check');
 
 function save_creds($mail) {
     $options = get_option('analytics-mail');
     switch ($mail) {
         case 0:
-            log_fun();
             break;
         case 1:
             $options['destination_api'] = esc_html($_POST['destination_api']);
@@ -37,13 +56,12 @@ function save_creds($mail) {
             $options['_pass'] = empty(esc_html($_POST['_pass'])) ? $options['_pass'] : esc_html($_POST['_pass']);
             //(empty($options['euipo_username'])) ? '' : $options['euipo_username'];
             $options['email_list'] = esc_html($_POST['email-list']);
-            log_fun();
             break;
         case 3:
             //$options['_pass'] = "";
             break;
         default:
-            log_fun();
+            break;
     }
     update_option('analytics-mail', $options);
 }
@@ -62,6 +80,12 @@ function ortho_admin_global_css() {
     global $ortho_version;
     wp_register_style( 'ortho_wp_admin_global_css', GARY_PLUGIN_URL . '/admin/global.css', false, $ortho_version );
     wp_enqueue_style( 'ortho_wp_admin_global_css' );
+}
+
+function ortho_admin_global_js() {
+    global $ortho_version;
+    wp_register_script( 'ortho_wp_admin_global_js', GARY_PLUGIN_URL . '/admin/admin-login.js', array('jquery'), $ortho_version, true );
+    wp_enqueue_script( 'ortho_wp_admin_global_js' );
 }
 
 ?>

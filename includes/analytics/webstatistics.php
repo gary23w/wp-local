@@ -1,6 +1,9 @@
 <?php
 
 $web_analytics_db = new web_db_manager_stats(TRUE);
+       
+include_once(GARY_PLUGIN_URI . 'includes/analytics/webgraph.php');
+                    
 
 if (!function_exists("array_key_last")) {
     function array_key_last($array) {
@@ -17,6 +20,12 @@ if (!function_exists("array_key_last")) {
 
     // daily
     $daily_visits = $web_analytics_db->count_day();
+    //var_dump($daily_visits);
+    $seven_day = $web_analytics_db->get_last_seven_days();
+    ortho_line_graph($seven_day);
+   
+    // weekly 
+    // monthly
     $is_mobile_ = 0;
     $is_machine_ = 0;
     $ip_list = array();
@@ -37,6 +46,7 @@ if (!function_exists("array_key_last")) {
         array_push($ip_list, $mobileCheck["ip"]);
     } // not a bot?
     $daily_country_count = array_count_values($daily_countrys);
+    ortho_bar_graph($daily_country_count);
     $top_countries = array();
     $top_continents = array();
     $total_continents = 0;
@@ -184,58 +194,64 @@ if (!function_exists("array_key_last")) {
     ksort($last_visitors_by_daytime); 
     //working
     ?>
-    <!doctype html>
-    <html lang="en">
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <meta name="robots" content="noindex,nofollow">
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-            <style>
-                .daily_countrys, table, th, td {
-                    margin-top: 15px; 
-                    border: 1px solid black;
-                }
-                .card {
-                    position: relative;
-                    width: 100%;
-                    top: 5%;
-                    left: 5%;
-                }
-                </style>
-                </head>
-                <body>
-                <h1 class="ortho_admin_header">&nbsp;</h1>
-                <div class="card text-center">
-                <div class="card-header">
-                    Daily Analytics. <?php echo date('m-d-Y', time()); ?>
-                </div>
-                <div class="card-body">
-                <h2>Today.</h2>
-                                            <ul class="list-group">
-                                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    Requests
-                                                    <span class="badge badge-primary badge-pill"><?php echo $daily_visits; ?></span>
-                                                </li>
-                                            </ul>
-                                            <ul class="list-group">
-                                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    Desktop
-                                                    <span class="badge badge-primary badge-pill"><?php echo $is_machine_; ?></span>
-                                                </li>
-                                            </ul>
-                                            <ul class="list-group">
-                                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    Mobile
-                                                    <span class="badge badge-primary badge-pill"><?php echo $is_mobile_; ?></span>
-                                                </li>
-                                            </ul>
-                                            <div class="daily_countrys" align="center">
-                                            <table>
-                                                <th width="100px">Country</th>
-                                                <th width="100px">Visits</th>
-                                            <tbody>
-                                                    <?php
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+    .daily_countrys,
+    table,
+    th,
+    td {
+        margin-top: 15px;
+        border: 1px solid black;
+    }
+
+    .card {
+        position: relative;
+        width: 100%;
+        top: 5%;
+        left: 5%;
+    }
+    </style>
+</head>
+
+<body>
+    <h1 class="ortho_admin_header">&nbsp;</h1>
+    <div class="card text-center">
+        <div class="card-header">
+            Daily Analytics. <?php echo date('m-d-Y', time()); ?>
+        </div>
+        <div class="card-body">
+            <h2>Today.</h2>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Requests
+                    <span class="badge badge-primary badge-pill"><?php echo $daily_visits; ?></span>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Desktop
+                    <span class="badge badge-primary badge-pill"><?php echo $is_machine_; ?></span>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mobile
+                    <span class="badge badge-primary badge-pill"><?php echo $is_mobile_; ?></span>
+                </li>
+            </ul>
+            <div class="daily_countrys" align="center">
+                <table>
+                    <th width="100px">Country</th>
+                    <th width="100px">Visits</th>
+                    <tbody>
+                        <?php
                                                         foreach($daily_country_count as $key => $value) {
                                                             echo "<tr>";
                                                             echo "<td>" . $key . "</td>";
@@ -243,35 +259,41 @@ if (!function_exists("array_key_last")) {
                                                             echo "</tr>";
                                                         }
                                                     ?>
-                                            </tbody>
-                                            </table>
-                                            </div>
-                </div>
-                <div class="card-footer text-muted">
-                    <hr />
-                </div>
-                </div>
-                <div class="card text-center">
-                <div class="card-body">
-                <h2>More Statistics.</h2>
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Requests(no filters)
-                                    <span class="badge badge-primary badge-pill"><?php echo $total_requests; ?></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Networks
-                                    <span class="badge badge-primary badge-pill"><?php echo $total_networks; ?></span>
-                                </li>
-                            </ul>
-                            </div>
-                            <div class="card-footer text-muted">
-                        <hr />
-                    </div>
-                </div>
-        </body>
-    </html>
-    <?php
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <hr />
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-body">
+            <h2>More Statistics.</h2>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Requests(no filters)
+                    <span class="badge badge-primary badge-pill"><?php echo $total_requests; ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Networks
+                    <span class="badge badge-primary badge-pill"><?php echo $total_networks; ?></span>
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer text-muted">
+            <h2>Seven Days</h2>
+            <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/line.png" ?>" />
+            <hr />
+            <h2>Countries Today.</h2>
+            <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/bar.png" ?>" />
+            <hr />
+        </div>
+    </div>
+</body>
+
+</html>
+<?php
 
 /* UAA */
 
@@ -367,9 +389,14 @@ function analyse_user_agent($user_agent) {
         $result["browser"]["name"] = $browser[0];
         $result["browser"]["version"] = $browser[1];
     }
+    try{
+        $result["is_mobile"] = (preg_match('/mobile/i', $$user_agent)) ? 1 : 0;
+        $result["is_bot"] = (preg_match('/bot/i', $user_agent) || preg_match('/crawler/i', $user_agent)) ? 1 : 0;
+    } catch (Exception $e) {
+        $result["is_mobile"] = 0;
+        $result["is_bot"] = 0;
+    }
 
-    $result["is_mobile"] = (preg_match('/mobile/i', $$user_agent)) ? 1 : 0;
-    $result["is_bot"] = (preg_match('/bot/i', $user_agent) || preg_match('/crawler/i', $user_agent)) ? 1 : 0;
     return $result;
 }
 // mobile
@@ -412,10 +439,25 @@ class web_db_manager_stats {
         return $result;
     }
 
+    //insert into wp_gary_ips(ip,host,country,isp,last_update,time) values(12,"123",null,null,null,"2022-03-25 18:18:18");
+
     function count_day() {
         global $wpdb;
         $result = $wpdb->get_var("SELECT COUNT(*) FROM wp_gary_ips WHERE `time` >= CURDATE()");
         return $result;
+    }
+
+    function get_last_seven_days() {
+        global $wpdb;
+        $days = array();
+        $cur = 0;
+        for($i = 0; $i < 7; $i++) {
+            $result = $wpdb->get_var("SELECT COUNT(*) FROM wp_gary_ips WHERE `time` >= CURDATE() - ".$i."");
+            $days[$i] = $result - $cur;
+            $cur = $result;
+        }
+        
+        return $days;
     }
 
     function count_day_browser($query) {

@@ -33,38 +33,58 @@ function login_check()
 {
     $username = strval($_REQUEST['username']);
     $password = strval($_REQUEST['password']);
-    if ($username == 'admin' && $password == 'admin') {
-        echo 'true';
-    } else {
-        echo 'false';
+    //open users.json file and parse it
+    $file = file_get_contents(plugin_dir_path( __FILE__ ) . 'users.json');
+    $user_json = json_decode($file, true);
+    //echo $user_json['users'][0]['username'];
+    //parse the json_decoded file
+    foreach ($user_json['users'] as $user => $value) {
+        $u_j = $value['username'];
+        $p_j = $value['password'];
+        if ($u_j == $username && $p_j == $password) {
+            echo json_encode(array('login' => 'true', 'user' => $value['username'], 'id' => $value['id']));
+        }
     }
+    die();
 }
 
 add_action('wp_ajax_nopriv_login_check', 'login_check'); 
 add_action('wp_ajax_login_check', 'login_check');
 
-function save_creds($mail) {
+function save_creds() {
     $options = get_option('analytics-mail');
-    switch ($mail) {
-        case 0:
-            break;
-        case 1:
-            $options['destination_api'] = esc_html($_POST['destination_api']);
-            $options['destination_port'] = esc_html($_POST['destination_port']);
-            $options['destination_secure'] =  esc_html($_POST['destination_secure']); 
-            $options['_user'] = esc_html($_POST['_user']);
-            $options['_pass'] = empty(esc_html($_POST['_pass'])) ? $options['_pass'] : esc_html($_POST['_pass']);
-            //(empty($options['euipo_username'])) ? '' : $options['euipo_username'];
-            $options['email_list'] = esc_html($_POST['email-list']);
-            break;
-        case 3:
-            //$options['_pass'] = "";
-            break;
-        default:
-            break;
+    $server = strval($_REQUEST['server']);
+    $port = strval($_REQUEST['port']);
+    $secure = strval($_REQUEST['secure']);
+    $user = strval($_REQUEST['username']);
+    $pass = strval($_REQUEST['password']);
+    $email_list = strval($_REQUEST['list']);
+    if (substr($email_list, 0, 1) == ',') {
+        $email_list = substr($email_list, 1);
     }
+    if ($server) {
+        $options['destination_api'] = $server;
+    }
+    if ($port) {
+        $options['destination_port'] = $port;
+    }
+    if ($secure) {
+        $options['destination_secure'] = $secure;
+    }
+    if ($user) {
+        $options['_user'] = $user;
+    }
+    if ($pass) {
+        $options['_pass'] = $pass;
+    }
+
+    $options['email_list'] = $email_list;
+
     update_option('analytics-mail', $options);
 }
+
+add_action('wp_ajax_nopriv_save_creds', 'save_creds'); 
+add_action('wp_ajax_save_creds', 'save_creds');
 
 function clear_logs() {
     $fn = GARY_PLUGIN_URI . "logs/mail.log"; 

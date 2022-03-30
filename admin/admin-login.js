@@ -96,10 +96,12 @@ function login_check(username, password) {
       username: username,
       password: password,
     },
+    datatype: "json",
     success: function (resp) {
-      if (resp == "true0") {
+      var resp_array = JSON.parse(resp);
+      console.log(resp_array);
+      if (resp_array["login"] == "true") {
         console.log("success");
-        //set 24 hour cookie
         var date = new Date();
         date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
         var expires = "; expires=" + date.toUTCString();
@@ -114,4 +116,69 @@ function login_check(username, password) {
       alert("Request failed: " + thrownError.message + xhr + ajaxOptions);
     },
   });
+}
+
+function save_creds() {
+  var server = document.getElementById("destination_api").value;
+  var port = document.getElementById("destination_port").value;
+  var secure = document.getElementById("destination_secure").value;
+  var user = document.getElementById("_user").value;
+  var password = document.getElementById("_pass");
+  // check pass placeholder for multiple asterisks
+  if (password.placeholder.indexOf("*") > -1) {
+    console.log("placeholder has asterisk");
+    pass = null;
+  } else {
+    pass = document.getElementById("_pass").value;
+  }
+  var list = document.getElementById("list-mail");
+  var list_items = list.getElementsByTagName("li");
+  var list_array = [];
+  for (var i = 0; i < list_items.length; i++) {
+    list_array.push(list_items[i].id);
+  }
+  var list_string = list_array.join(",");
+  jQuery.ajax({
+    url: ajaxurl,
+    type: "POST",
+    data: {
+      action: "save_creds",
+      server: server,
+      port: port,
+      secure: secure,
+      username: user,
+      password: pass,
+      list: list_string,
+    },
+    success: function (resp) {
+      location.reload();
+    },
+  });
+}
+
+//build responsive mail list
+
+function addItem() {
+  var a = document.getElementById("list-mail");
+  var candidate = document.getElementById("candidate");
+  var li = document.createElement("li");
+  li.setAttribute("id", candidate.value);
+  li.appendChild(document.createTextNode(candidate.value));
+  a.appendChild(li);
+}
+
+// Creating a function to remove item from list
+
+function delthis() {
+  var element = event.target;
+  get_li = jQuery(element).closest("li");
+  get_li.remove();
+}
+
+function removeItem() {
+  // Declaring a variable to get select element
+  var a = document.getElementById("list-mail");
+  var candidate = document.getElementById("candidate");
+  var item = document.getElementById(candidate.value);
+  a.removeChild(item);
 }

@@ -107,7 +107,6 @@ function login_check(username, password) {
         //reload page
         location.reload();
       } else {
-        console.log("fail");
         alert("Incorrect username or password");
       }
     },

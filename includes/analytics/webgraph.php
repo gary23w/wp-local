@@ -13,7 +13,7 @@ function ortho_line_graph($data) {
         // Add the plot to the graph
         $graph->Add($lineplot);
             
-        // Display the graph
+        // draw the graph
         $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/line.png");
 }
 
@@ -58,7 +58,7 @@ function ortho_line_plot($datax, $datay) {
     $graph->legend->SetLayout(LEGEND_HOR);
     $graph->legend->Pos(0.4,0.95,"center","bottom");
     
-    // Display the graph
+    // draw the graph
     $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/plot.png");
 }
 
@@ -69,7 +69,7 @@ function ortho_bar_graph($data) {
     //if $data is empty
     if(empty($data)) {
         $countries = array("No data", "No data", "No data", "No data");
-        $visits = array(47,80,40,116);
+        $visits = array(20,20,20,20);
     } else {
         foreach ($data as $key => $value) {
             //add key to countries array
@@ -109,7 +109,7 @@ function ortho_bar_graph($data) {
     
     $graph->title->Set("Bar Plots");
     
-    // Display the graph
+    // draw the graph
     $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/bar.png");
 }
 ?>

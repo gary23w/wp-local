@@ -68,8 +68,8 @@ function ortho_bar_graph($data) {
     $visits = array();
     //if $data is empty
     if(empty($data)) {
-        $countries = array("No data", "No data", "No data", "No data");
-        $visits = array(20,20,20,20);
+        $countries = array("CA", "US", "RU", "CH", "SW", "AU", "DE", "JA", "NZ", "TEST");
+        $visits = array(100,1000,5000,10000,100,1000,5000,10000,100,50000);
     } else {
         foreach ($data as $key => $value) {
             //add key to countries array
@@ -87,7 +87,7 @@ function ortho_bar_graph($data) {
     $theme_class=new UniversalTheme;
     $graph->SetTheme($theme_class);
     
-    $graph->yaxis->SetTickPositions(array(0,30,60,90,120,150), array(15,45,75,105,135));
+    $graph->yaxis->SetTickPositions(array(0,1000,5000,10000,20000,30000,50000,100000,500000,1000000,5000000,10000000), array(150,4500,7500,10000,40000));
     $graph->SetBox(false);
     
     $graph->ygrid->SetFill(false);

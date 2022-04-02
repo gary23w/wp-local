@@ -1,5 +1,5 @@
 <?php
-$ortho_available_pages = array('home', 'boiler', 'utils');
+$ortho_available_pages = array('home', 'boiler', 'utils', 'users');
 $home_page = "no_highlight";
 $stat_page = "no_highlight";
 $settings_page = "no_highlight";
@@ -16,7 +16,6 @@ switch(true) {
 <script>
 function loadBug() {
     jQuery(".ortho_admin_settings").toggle(200);
-    //jQuery(".ortho_admin_settings").toggle(50);
 }
 setTimeout(loadBug, 20);
 </script>
@@ -30,6 +29,10 @@ setTimeout(loadBug, 20);
                     href="<?php print ortho_options_save_url('&o=boiler');?>">Stats</a></li>
             <li class="<?php print $home_page; ?>"><a class="menu_button"
                     href="<?php print ortho_options_save_url('&o=utils');?>">Testing</a></li>
+            <li class="<?php print $home_page; ?>"><a class="menu_button"
+                    href="<?php print ortho_options_save_url('&o=users');?>">Users</a></li>
+            <li class="<?php print $home_page; ?>"><a class="logout_btn_"
+                    onclick="console.log('logging out')">Logout</a></li>
         </ul>
     </div>
     <div class="ortho_admin_content">
@@ -51,9 +54,6 @@ setTimeout(loadBug, 20);
 		}
 		?>
 
-        <!-- / END ADMIN CONTENT -->
-
     </div>
 
 </div>
-<!-- / END ADMIN PANEL -->

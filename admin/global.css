@@ -406,3 +406,8 @@ input:read-only {
   margin-top: 10px;
   text-align: center;
 }
+
+.logout_btn_ {
+  background: #dcdcde;
+  cursor: pointer;
+}

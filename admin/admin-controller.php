@@ -24,6 +24,7 @@ function admin_ajax(){
     ?>
 <script>
 var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+var pathPlu = '<?php echo GARY_PLUGIN_URL ?>';
 </script>
 <?php
     }
@@ -33,23 +34,46 @@ function login_check()
 {
     $username = strval($_REQUEST['username']);
     $password = strval($_REQUEST['password']);
-    //open users.json file and parse it
     $file = file_get_contents(plugin_dir_path( __FILE__ ) . 'users.json');
     $user_json = json_decode($file, true);
-    //echo $user_json['users'][0]['username'];
-    //parse the json_decoded file
+    $cur_user = json_encode(array("login" => "false"));
     foreach ($user_json['users'] as $user => $value) {
         $u_j = $value['username'];
         $p_j = $value['password'];
         if ($u_j == $username && $p_j == $password) {
-            echo json_encode(array('login' => 'true', 'user' => $value['username'], 'id' => $value['id']));
+            $cur_user = json_encode(array('login' => 'true', 'user' => $value['username'], 'id' => $value['id'], 'hash' => $value['hash']));
         }
     }
+    echo $cur_user;
     die();
 }
 
 add_action('wp_ajax_nopriv_login_check', 'login_check'); 
 add_action('wp_ajax_login_check', 'login_check');
+
+function hash_check()
+{
+    $cookie_id = strval($_REQUEST['cookie_id']);
+    $file = file_get_contents(plugin_dir_path( __FILE__ ) . 'users.json');
+    $user_json = json_decode($file, true);
+    $check = false;
+    foreach ($user_json['users'] as $user => $value) { // expand on this some time.
+        $h_j = $value['hash'];
+        if ($h_j == $cookie_id) {
+            $check = true;
+        }
+    }
+    if($check == true){
+       echo json_encode(array('hash' => 'true'));
+    } else {
+       echo json_encode(array('hash' => 'false')); 
+    }
+    
+    die();
+}
+
+add_action('wp_ajax_nopriv_hash_check', 'hash_check'); 
+add_action('wp_ajax_hash_check', 'hash_check');
 
 function save_creds() {
     $options = get_option('analytics-mail');
@@ -85,6 +109,34 @@ function save_creds() {
 
 add_action('wp_ajax_nopriv_save_creds', 'save_creds'); 
 add_action('wp_ajax_save_creds', 'save_creds');
+
+function add_user_local() {
+    $name = strval($_REQUEST['personname']);
+    $username_new = strval($_REQUEST['username']);
+    $pass = strval($_REQUEST['password']);
+    $file = file_get_contents(plugin_dir_path( __FILE__ ) . 'users.json');
+    $user_json = json_decode($file, true);
+    //get last id
+    $last_id = 0;
+    foreach ($user_json['users'] as $user => $value) {
+        $id = $value['id'];
+        if ($id > $last_id) {
+            $last_id = $id;
+        }
+    }
+    $new_id = $last_id + 1;
+    $hash = md5($name);
+    $user_json['users'][] = array('id' => $new_id, 'name' => $name, 'username' => $username_new, 'password' => $pass, 'hash' => $hash);
+    //write to file
+    $file = fopen(GARY_PLUGIN_URI . 'admin/users.json', 'w');
+    fwrite($file, json_encode($user_json));
+    fclose($file);
+    echo json_encode(array('user_created' => 'true', $user_json));
+    die();
+}
+
+add_action('wp_ajax_nopriv_add_user_local', 'add_user_local'); 
+add_action('wp_ajax_add_user_local', 'add_user_local');
 
 function clear_logs() {
     $fn = GARY_PLUGIN_URI . "logs/mail.log"; 

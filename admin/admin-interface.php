@@ -4,6 +4,50 @@
     color: black;
     font-family: Helvetica, Arial, sans-serif;
 }
+
+label {
+    font-family: sans-serif;
+    color: rgba(61, 67, 79, 0.75);
+    width: 130px;
+    float: left;
+
+}
+
+input[type=text],
+input[type=number],
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: grey !important;
+    color: #dcdcde;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: white;
+}
+
+.add_remove_mail_user {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    justify-content: space-around;
+    align-items: baseline;
+}
 </style>
 <h1 class="ortho_admin_header">&nbsp;</h1>
 <div class="wrap">
@@ -104,12 +148,15 @@
                                                     }
                                                     ?>
                                             </ul>
-                                            <input type="text" id="candidate" style="width: 50%;" />
-                                            <div style="float: right;">
-                                                <button type="button" onclick="addItem()" class="addMail">
-                                                    Add receiver</button>
-                                                <button type="button" onclick="removeItem()" class="removeMail">
-                                                    Remove receiver</button>
+                                            <input type="text" id="candidate" style="width: 100%;"
+                                                placeholder="user@mail.com" />
+                                            <div class="add_remove_mail_user">
+                                                <input class="button-primary" type="submit" onclick="addItem()"
+                                                    class="addMail" value="Add" />
+
+                                                <input class="button-primary" type="submit" onclick="removeItem()"
+                                                    class="removeMail" value="Remove" />
+
                                             </div>
                                         </div>
                                     </td>

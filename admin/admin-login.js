@@ -1,9 +1,11 @@
 jQuery(document).ready(function ($) {
-  //check for login cookie
+  $("#wpbody-content").hide();
   var login_cookie = getCookie("gary-login");
-  if (!login_cookie) {
-    //hide everything
-    $("#wpbody-content").hide();
+  if (
+    login_cookie === null ||
+    login_cookie === "" ||
+    login_cookie === "false"
+  ) {
     //create the login form
     $("#wpbody").append(`
         <style>
@@ -58,7 +60,7 @@ jQuery(document).ready(function ($) {
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-primary" onclick="login_check(jQuery(\'#username\').val(), jQuery(\'#password\').val())">Submit</button>
+        <button type="submit" class="btn btn-primary" onclick="login_check(jQuery(\'#username\').val(), jQuery(\'#password\').val())">Login</button>
         </div>
     `);
     // center login-form
@@ -67,6 +69,19 @@ jQuery(document).ready(function ($) {
       top: "50%",
       left: "30%",
     });
+  } else {
+    if (check_cookie_hash(login_cookie)) {
+      quickset_cookie("false");
+      alert("bad credentials detected");
+      window.location.href = "/wp-admin/admin.php?page=analytics_mail";
+    } else {
+      $("#wpbody-content").show();
+      $.getScript(pathPlu + "/admin/admin-user.js");
+      $(".logout_btn_").click(function () {
+        deleteCookie("gary-login");
+        location.reload();
+      });
+    }
   }
 });
 
@@ -99,15 +114,9 @@ function login_check(username, password) {
     datatype: "json",
     success: function (resp) {
       var resp_array = JSON.parse(resp);
-      console.log(resp_array);
       if (resp_array["login"] == "true") {
-        console.log("success");
-        var date = new Date();
-        date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-        var expires = "; expires=" + date.toUTCString();
-        document.cookie = "gary-login=true" + expires + "; path=/";
-        //reload page
-        location.reload();
+        quickset_cookie(resp_array["hash"]);
+        window.location.reload();
       } else {
         alert("Incorrect username or password");
       }
@@ -118,13 +127,33 @@ function login_check(username, password) {
   });
 }
 
+function check_cookie_hash(cookie) {
+  jQuery.ajax({
+    url: ajaxurl,
+    type: "POST",
+    data: {
+      action: "hash_check",
+      cookie_id: cookie,
+    },
+    datatype: "json",
+    success: function (resp) {
+      //parse json response
+      var resp_array = JSON.parse(resp);
+      if (resp_array["hash"] == "true") {
+        console.log("[*] hash check success.");
+        return true;
+      }
+      return false;
+    },
+  });
+}
+
 function save_creds() {
   var server = document.getElementById("destination_api").value;
   var port = document.getElementById("destination_port").value;
   var secure = document.getElementById("destination_secure").value;
   var user = document.getElementById("_user").value;
   var password = document.getElementById("_pass");
-  // check pass placeholder for multiple asterisks
   if (password.placeholder.indexOf("*") > -1) {
     console.log("placeholder has asterisk");
     pass = null;
@@ -154,6 +183,50 @@ function save_creds() {
       location.reload();
     },
   });
+}
+
+function setCookie(params) {
+  var name = params.name,
+    value = params.value,
+    expireDays = params.days,
+    expireHours = params.hours,
+    expireMinutes = params.minutes,
+    expireSeconds = params.seconds;
+
+  var expireDate = new Date();
+  if (expireDays) {
+    expireDate.setDate(expireDate.getDate() + expireDays);
+  }
+  if (expireHours) {
+    expireDate.setHours(expireDate.getHours() + expireHours);
+  }
+  if (expireMinutes) {
+    expireDate.setMinutes(expireDate.getMinutes() + expireMinutes);
+  }
+  if (expireSeconds) {
+    expireDate.setSeconds(expireDate.getSeconds() + expireSeconds);
+  }
+
+  document.cookie =
+    name +
+    "=" +
+    escape(value) +
+    ";domain=" +
+    window.location.hostname +
+    ";path=/" +
+    ";expires=" +
+    expireDate.toUTCString();
+}
+
+function quickset_cookie(params) {
+  var date = new Date();
+  date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+  var expires = "; expires=" + date.toUTCString();
+  document.cookie = "gary-login=" + params + expires + "; path=/";
+}
+
+function deleteCookie(name) {
+  setCookie({ name: name, value: "", seconds: 1 });
 }
 
 //build responsive mail list

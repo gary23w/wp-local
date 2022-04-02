@@ -17,46 +17,35 @@ function ortho_line_graph($data) {
         $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/line.png");
 }
 
-function ortho_line_plot($datax, $datay) {
-    $ydata = array(11,3,8,12,5,1,9,13,5,7);
-    $y2data = array(354,200,265,99,111,91,198,225,293,251);
+function ortho_line_plot($ydata) {    
+    // Some (random) data
     
-    // Create the graph and specify the scale for both Y-axis
-    $graph = new Graph(300,240);    
-    $graph->SetScale("textlin");
-    $graph->SetShadow();
+    // Size of the overall graph
+    $width=350;
+    $height=250;
     
-    // Adjust the margin
-    $graph->img->SetMargin(40,40,20,70);
+    // Create the graph and set a scale.
+    // These two calls are always required
+    $graph = new Graph($width,$height);
+    $graph->SetScale('intlin');
+
+    //get date 
+    $date = date('Y-m-d');
+    $date = strtotime($date);
     
-    // Create the two linear plot
+    // Setup margin and titles
+    $graph->SetMargin(40,20,20,40);
+    $graph->title->Set('Line plot for 7 day.');
+    $graph->subtitle->Set($date);
+    $graph->xaxis->title->Set('Operator');
+    $graph->yaxis->title->Set('# of requests');
+    
+    
+    // Create the linear plot
     $lineplot=new LinePlot($ydata);
-    $lineplot->SetStepStyle();
-    
-    // Adjust the axis color
-    $graph->yaxis->SetColor("blue");
-    
-    $graph->title->Set("Example 6.2");
-    $graph->xaxis->title->Set("X-title");
-    $graph->yaxis->title->Set("Y-title");
-    
-    $graph->title->SetFont(FF_FONT1,FS_BOLD);
-    $graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);
-    $graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);
-    
-    // Set the colors for the plots 
-    $lineplot->SetColor("blue");
-    $lineplot->SetWeight(2);
-    
-    // Set the legends for the plots
-    $lineplot->SetLegend("Plot 1");
     
     // Add the plot to the graph
     $graph->Add($lineplot);
-    
-    // Adjust the legend position
-    $graph->legend->SetLayout(LEGEND_HOR);
-    $graph->legend->Pos(0.4,0.95,"center","bottom");
     
     // draw the graph
     $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/plot.png");
@@ -64,15 +53,16 @@ function ortho_line_plot($datax, $datay) {
 
 function ortho_bar_graph($data) {
     // loop through data and create countries and visits arrays
+    $title = "Country Bar Graph";
     $countries = array();
     $visits = array();
     //if $data is empty
     if(empty($data)) {
         $countries = array("CA", "US", "RU", "CH", "SW", "AU", "DE", "JA", "NZ", "TEST");
         $visits = array(100,1000,5000,10000,100,1000,5000,10000,100,50000);
+        $title = "Nulled Bar Graph";
     } else {
         foreach ($data as $key => $value) {
-            //add key to countries array
             array_push($countries, $key);
             array_push($visits, $value);
         }
@@ -107,9 +97,26 @@ function ortho_bar_graph($data) {
     $b1plot->SetColor("white");
     $b1plot->SetFillColor("#cc1111");
     
-    $graph->title->Set("Bar Plots");
+    $graph->title->Set($title);
     
     // draw the graph
     $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/bar.png");
+}
+
+function ortho_pie_graph($data) {
+    $title = "7 Day Visits";
+    if(empty($data)) {
+        $data = array(40,60,21,33);
+        $title = "null graph";
+    }
+ 
+    $graph = new PieGraph(300,200);
+    $graph->SetShadow();
+    
+    $graph->title->Set($title);
+    
+    $p1 = new PiePlot($data);
+    $graph->Add($p1);
+    $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/pie.png");
 }
 ?>

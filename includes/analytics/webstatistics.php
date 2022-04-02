@@ -20,9 +20,9 @@ if (!function_exists("array_key_last")) {
 
     // daily
     $daily_visits = $web_analytics_db->count_day();
-    //var_dump($daily_visits);
     $seven_day = $web_analytics_db->get_last_seven_days();
     ortho_line_graph($seven_day);
+    ortho_pie_graph($seven_day);
    
     // weekly 
     // monthly
@@ -47,6 +47,7 @@ if (!function_exists("array_key_last")) {
     } // not a bot?
     $daily_country_count = array_count_values($daily_countrys);
     ortho_bar_graph($daily_country_count);
+   
     $top_countries = array();
     $top_continents = array();
     $total_continents = 0;
@@ -285,9 +286,12 @@ if (!function_exists("array_key_last")) {
             <h2>Seven Days</h2>
             <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/line.png" ?>" />
             <hr />
+            <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/pie.png" ?>" />
+            <hr />
             <h2>Countries Today.</h2>
             <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/bar.png" ?>" />
             <hr />
+
         </div>
     </div>
 </body>

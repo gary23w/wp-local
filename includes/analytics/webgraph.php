@@ -77,7 +77,7 @@ function ortho_bar_graph($data) {
     $theme_class=new UniversalTheme;
     $graph->SetTheme($theme_class);
     
-    $graph->yaxis->SetTickPositions(array(0,1000,5000,10000,20000,30000,50000,100000,500000,1000000,5000000,10000000), array(150,4500,7500,10000,40000));
+    $graph->yaxis->SetTickPositions($visits);
     $graph->SetBox(false);
     
     $graph->ygrid->SetFill(false);

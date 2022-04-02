@@ -236,7 +236,11 @@ function addItem() {
   var candidate = document.getElementById("candidate");
   var li = document.createElement("li");
   li.setAttribute("id", candidate.value);
-  li.appendChild(document.createTextNode(candidate.value));
+  li.className = "admin-mail-li";
+  li.innerHTML =
+    "<div class='mail-div'><span class='mail-span'>" +
+    candidate.value +
+    "</span><button class='del-btn' onclick='delthis()'>X</button></div>";
   a.appendChild(li);
 }
 

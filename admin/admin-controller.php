@@ -141,6 +141,11 @@ add_action('wp_ajax_add_user_local', 'add_user_local');
 function clear_logs() {
     $fn = GARY_PLUGIN_URI . "logs/mail.log"; 
     $fp = fopen(GARY_PLUGIN_URI . "logs/mail.log", "w") or die("Unable to open file!");
+    fwrite($fp, "
+    -----------------------------------------------
+    |-             A simple log system           -|
+    -----------------------------------------------
+    ");
     fclose($fp);
 }
 

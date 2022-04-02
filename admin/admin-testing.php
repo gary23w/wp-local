@@ -1,3 +1,7 @@
+<script>
+var fancy = document.getElementById("fancy");
+fancy.scrollIntoView(false);
+</script>
 <style>
 .box_holder {
     display: flex;
@@ -59,20 +63,24 @@
                     <div class="box_holder">
                         <h2 class="hndle"><span><?php echo $err ?></span>
                         </h2>
-                        <p>
+                        <div class="fancy-logs" id="fancy">
+                            <code>
                             <?php
                             $myfile = fopen(GARY_PLUGIN_URI . "logs/mail.log", "r") or die("Unable to open file!");
                             $contents = fread($myfile,filesize(GARY_PLUGIN_URI . "logs/mail.log"));
-                            $lines = explode("\n", $contents); // this is your array of words
-                            //var_dump($lines);
+                            $lines = explode("\n", $contents);
                             foreach($lines as $word) {
-                                echo "<p>" . $word . "</p>";
+                                if ($word != "") {
+                                    echo "<p>---</p>";
+                                    echo $word;
+                                    echo "<p>---</p>";
+                                }
                             }
                             fclose($myfile);
                         ?>
-                        </p>
+                        </code>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>

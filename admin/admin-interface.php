@@ -102,23 +102,10 @@ input[type=submit]:hover {
                                 <tr valign="top">
                                     <td scope="row"><label for="tablecell">Password:</label></td>
                                     <td>
-                                        <?php
-									if($_pass):
-									$c = strlen($_pass);
-									?>
+
                                         <input class="regular-text code" name="_pass" id="_pass" type="password"
-                                            placeholder="<?php
-									for($i = 0; $i<$c; $i++) 
-										echo "*";
-									?>" />
-                                        <?php
-									else:
-									?>
-                                        <input class="regular-text code" name="_pass" id="_pass" type="password"
-                                            value="" maxlength="1000" />
-                                        <?php
-									endif;
-									?>
+                                            value="<?php echo $_pass; ?>" />
+
                                     </td>
                                 <tr>
                                     <td>

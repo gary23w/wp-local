@@ -402,7 +402,6 @@ input:read-only {
 
 .mail-span {
   width: 100%;
-  /* center the text */
   margin-top: 10px;
   text-align: center;
 }
@@ -410,4 +409,27 @@ input:read-only {
 .logout_btn_ {
   background: #dcdcde;
   cursor: pointer;
+}
+
+.fancy-logs {
+  position: relative;
+  background-color: #ffc;
+  padding: 2rem;
+  max-width: auto;
+  width: 100%;
+  height: auto;
+  overflow: scroll;
+}
+
+.fancy-logs::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 15px;
+  right: 5px;
+  width: 50%;
+  top: 80%;
+  max-width: 200px;
+  box-shadow: 0px 13px 10px black;
+  transform: rotate(4deg);
 }

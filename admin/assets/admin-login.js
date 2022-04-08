@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+  var current_user;
   $("#wpbody-content").hide();
   var login_cookie = getCookie("gary-login");
   if (
@@ -75,8 +76,19 @@ jQuery(document).ready(function ($) {
       alert("bad credentials detected");
       window.location.href = "/wp-admin/admin.php?page=analytics_mail";
     } else {
+      //set user
+      current_user = login_cookie.split("-")[0];
       $("#wpbody-content").show();
-      $.getScript(pathPlu + "/admin/admin-user.js");
+      $.getScript(pathPlu + "/admin/assets/admin-user.js");
+      //set header message
+      $(".ortho_main_header").text(" " + current_user + " ");
+      var lifespan_cookie = getCookie(current_user + "-lifespan");
+      var lifespan_date = new Date(lifespan_cookie);
+      var current_date = new Date();
+      var check_date = new Date(current_date.getTime() - 86400);
+      if (check_date > lifespan_date) {
+        alert("please change your password");
+      }
       $(".logout_btn_").click(function () {
         deleteCookie("gary-login");
         location.reload();
@@ -115,7 +127,7 @@ function login_check(username, password) {
     success: function (resp) {
       var resp_array = JSON.parse(resp);
       if (resp_array["login"] == "true") {
-        quickset_cookie(resp_array["hash"]);
+        quickset_cookie(username + "-" + resp_array["hash"]);
         window.location.reload();
       } else {
         alert("Incorrect username or password");
@@ -128,19 +140,23 @@ function login_check(username, password) {
 }
 
 function check_cookie_hash(cookie) {
+  var cookie_array = cookie.split("-");
+  var username = cookie_array[0];
+  var hash = cookie_array[1];
   jQuery.ajax({
     url: ajaxurl,
     type: "POST",
     data: {
       action: "hash_check",
-      cookie_id: cookie,
+      cookie_id: hash,
     },
     datatype: "json",
     success: function (resp) {
       //parse json response
       var resp_array = JSON.parse(resp);
       if (resp_array["hash"] == "true") {
-        console.log("[*] hash check success.");
+        //set lifespan cookie
+        lifespan_cookie(username);
         return true;
       }
       return false;
@@ -218,11 +234,23 @@ function setCookie(params) {
     expireDate.toUTCString();
 }
 
-function quickset_cookie(params) {
+function quickset_cookie(name, params) {
   var date = new Date();
   date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
   var expires = "; expires=" + date.toUTCString();
-  document.cookie = "gary-login=" + params + expires + "; path=/";
+  document.cookie = "gary-login=" + name + "-" + params + expires + "; path=/";
+}
+function lifespan_cookie(username) {
+  //check if user has a lifespan cookie
+  var lifespan_cookie = getCookie(username + "-lifespan");
+  if (lifespan_cookie == null) {
+    var date = new Date();
+    //set expiration to 1 month
+    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+    var expires = "; expires=" + date.toUTCString();
+    document.cookie = username + "-lifespan=" + date.toUTCString();
+    +expires + "; path=/";
+  }
 }
 
 function deleteCookie(name) {

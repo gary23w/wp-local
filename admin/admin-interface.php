@@ -49,7 +49,7 @@ input[type=submit]:hover {
     align-items: baseline;
 }
 </style>
-<h1 class="ortho_admin_header">&nbsp;</h1>
+<h1 class="ortho_admin_header ortho_main_header"></h1>
 <div class="wrap">
     <div id="icon-options-general" class="icon32"></div>
     <div id="poststuff">

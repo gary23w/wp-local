@@ -3,7 +3,6 @@
 if(isset($_COOKIE['gary-login'])) {
 
 }
-
 function make_pass_ast($count) {
     for ($i = 0; $i < $count; $i++) {
         $pass .= "*";
@@ -75,6 +74,10 @@ input[type=submit]:hover {
 }
 
 .user_add {
+    width: 40%;
+    /* center the div */
+    margin-left: auto !important;
+    margin-right: auto !important;
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;

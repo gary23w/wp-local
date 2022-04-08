@@ -22,6 +22,7 @@ if (!function_exists("array_key_last")) {
     $daily_visits = $web_analytics_db->count_day();
     $seven_day = $web_analytics_db->get_last_seven_days();
     ortho_line_graph($seven_day);
+    ortho_line_plot($seven_day);
     ortho_pie_graph($seven_day);
    
     // weekly 
@@ -212,9 +213,9 @@ if (!function_exists("array_key_last")) {
         border: 1px solid black;
     }
 
-    .card {
+    .card-mail {
         position: relative;
-        width: 100%;
+        width: 70%;
         top: 5%;
         left: 5%;
     }
@@ -223,7 +224,7 @@ if (!function_exists("array_key_last")) {
 
 <body>
     <h1 class="ortho_admin_header">&nbsp;</h1>
-    <div class="card text-center">
+    <div class="card-mail text-center">
         <div class="card-header">
             Daily Analytics. <?php echo date('m-d-Y', time()); ?>
         </div>
@@ -268,7 +269,7 @@ if (!function_exists("array_key_last")) {
             <hr />
         </div>
     </div>
-    <div class="card text-center">
+    <div class="card-mail text-center">
         <div class="card-body">
             <h2>More Statistics.</h2>
             <ul class="list-group">
@@ -285,6 +286,8 @@ if (!function_exists("array_key_last")) {
         <div class="card-footer text-muted">
             <h2>Seven Days</h2>
             <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/line.png" ?>" />
+            <hr />
+            <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/plot.png" ?>" />
             <hr />
             <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/pie.png" ?>" />
             <hr />

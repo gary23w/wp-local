@@ -3,7 +3,7 @@ function ortho_line_graph($data) {
         // Some data
         $ydata = $data;             
         // Create the graph. These two calls are always required
-        $graph = new Graph(350,250);
+        $graph = new Graph(750,650);
         $graph->SetScale('textlin');
             
         // Create the linear plot
@@ -21,12 +21,12 @@ function ortho_line_plot($ydata) {
     // Some (random) data
     
     // Size of the overall graph
-    $width=350;
-    $height=250;
+    $width=750;
+    $height=650;
     
     // Create the graph and set a scale.
     // These two calls are always required
-    $graph = new Graph($width,$height);
+    $graph = new Graph($width,$height, 'auto');
     $graph->SetScale('intlin');
 
     //get date 
@@ -53,13 +53,13 @@ function ortho_line_plot($ydata) {
 
 function ortho_bar_graph($data) {
     // loop through data and create countries and visits arrays
-    $title = "Country Bar Graph";
+    $title = "Countries.";
     $countries = array();
     $visits = array();
     //if $data is empty
     if(empty($data)) {
         $countries = array("CA", "US", "RU", "CH", "SW", "AU", "DE", "JA", "NZ", "TEST");
-        $visits = array(100,1000,5000,10000,100,1000,5000,10000,100,50000);
+        $visits = array(100,1000,5000,10000,100,1000,5000,10000,100,5000);
         $title = "Nulled Bar Graph";
     } else {
         foreach ($data as $key => $value) {
@@ -71,7 +71,7 @@ function ortho_bar_graph($data) {
     $data1y=$visits;
     
     // Create the graph. These two calls are always required
-    $graph = new Graph(350,200,'auto');
+    $graph = new Graph(620,500,'auto');
     $graph->SetScale("textlin");
     
     $theme_class=new UniversalTheme;
@@ -104,16 +104,17 @@ function ortho_bar_graph($data) {
 }
 
 function ortho_pie_graph($data) {
-    $title = "7 Day Visits";
+    if(array_sum($data) == 0) {
+        $data = array(100,1000,5000,10000,100,1000,5000,10000,100,50000);
+        $title = "Nulled Pie Graph";
+    }
     if(empty($data)) {
         $data = array(40,60,21,33);
         $title = "null graph";
     }
  
-    $graph = new PieGraph(300,200);
+    $graph = new PieGraph(700,600, 'auto');
     $graph->SetShadow();
-    
-    $graph->title->Set($title);
     
     $p1 = new PiePlot($data);
     $graph->Add($p1);

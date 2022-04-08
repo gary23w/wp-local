@@ -155,14 +155,14 @@ function ortho_options_save_url($extra = '') {
 
 function ortho_admin_global_css() {
     global $ortho_version;
-    wp_register_style( 'ortho_wp_admin_global_css', GARY_PLUGIN_URL . '/admin/global.css', false, $ortho_version );
+    wp_register_style( 'ortho_wp_admin_global_css', GARY_PLUGIN_URL . '/admin/assets/global.css', false, $ortho_version );
     wp_enqueue_style( 'ortho_wp_admin_global_css' );
 }
 
 function ortho_admin_global_js() {
     global $ortho_version;
     if (strpos($_SERVER['REQUEST_URI'], 'analytics_mail') !== false) {
-        wp_register_script( 'ortho_wp_admin_global_js', GARY_PLUGIN_URL . '/admin/admin-login.js', array('jquery'), $ortho_version, true );
+        wp_register_script( 'ortho_wp_admin_global_js', GARY_PLUGIN_URL . '/admin/assets/admin-login.js', array('jquery'), $ortho_version, true );
         wp_enqueue_script( 'ortho_wp_admin_global_js' );
     }
 }

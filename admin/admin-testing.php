@@ -1,5 +1,5 @@
 <script>
-var fancy = document.getElementById("fancy");
+var fancy = document.getElementById("fancy-logs");
 fancy.scrollIntoView(false);
 </script>
 <style>
@@ -71,9 +71,9 @@ fancy.scrollIntoView(false);
                             $lines = explode("\n", $contents);
                             foreach($lines as $word) {
                                 if ($word != "") {
-                                    echo "<p>---</p>";
+                                    echo "<p>";
                                     echo $word;
-                                    echo "<p>---</p>";
+                                    echo "</p>";
                                 }
                             }
                             fclose($myfile);

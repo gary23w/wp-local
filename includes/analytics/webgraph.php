@@ -115,8 +115,24 @@ function ortho_pie_graph($data) {
  
     $graph = new PieGraph(700,600, 'auto');
     $graph->SetShadow();
-    
+    $amount = array();
     $p1 = new PiePlot($data);
+    $dates = array();
+    for($i = 0; $i < count($data); $i++) {
+        $date1 = new DateTime(); 
+        $date1->modify("-" . $i . " day");
+        $date1 = $date1->format("Y-m-d");
+        $date1 = $date1 . " - " . $data[$i];
+        array_push($dates, $date1);
+    }
+
+    $p1->SetLegends($dates);
+
+    $p1->SetGuideLines(true,false);
+    $p1->SetGuideLinesAdjust(1.1);
+    $p1->SetLabelType(PIE_VALUE_PER);    
+    $p1->value->Show();              
+    $p1->value->SetFormat('%2.1f%%');
     $graph->Add($p1);
     $graph->Stroke(GARY_PLUGIN_URI . "includes/analytics/graphs/pie.png");
 }

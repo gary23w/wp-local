@@ -66,6 +66,7 @@ function ortho_bar_graph($data) {
             array_push($countries, $key);
             array_push($visits, $value);
         }
+        $title = strval(date('Y-m-d')) . " Bar Graph";
     }
 
     $data1y=$visits;

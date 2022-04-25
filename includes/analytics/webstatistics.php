@@ -21,7 +21,8 @@ if (!function_exists("array_key_last")) {
     // daily
     $daily_visits = $web_analytics_db->count_day();
     $seven_day = $web_analytics_db->get_last_seven_days();
-    ortho_line_graph($seven_day);
+    //$seven_day = array(5,213,4,34,677,213,45,78);
+    //ortho_line_graph($seven_day); //creates a line chart with no titles or descriptions
     ortho_line_plot($seven_day);
     ortho_pie_graph($seven_day);
    
@@ -47,8 +48,8 @@ if (!function_exists("array_key_last")) {
         array_push($ip_list, $mobileCheck["ip"]);
     } // not a bot?
     $daily_country_count = array_count_values($daily_countrys);
+    //$daily_country_count = array("CA" => 10, "US" => 0, "RU" => 5, "CH" => 0, "SW" => 100, "AU" => 0, "DE" => 250, "JA" => 0, "NZ" => 30);
     ortho_bar_graph($daily_country_count);
-   
     $top_countries = array();
     $top_continents = array();
     $total_continents = 0;
@@ -285,7 +286,7 @@ if (!function_exists("array_key_last")) {
         </div>
         <div class="card-footer text-muted">
             <h2>Seven Days</h2>
-            <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/line.png" ?>" />
+            <!-- <img src="<?php //echo GARY_PLUGIN_URL . "/includes/analytics/graphs/line.png" ?>" /> -->
             <hr />
             <img src="<?php echo GARY_PLUGIN_URL . "/includes/analytics/graphs/plot.png" ?>" />
             <hr />

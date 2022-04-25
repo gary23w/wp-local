@@ -9,7 +9,7 @@ if(!defined("ABSPATH")) exit;
 define( 'GARY_PLUGIN_URL', plugins_url('', __FILE__ ) );
 define( 'GARY_PLUGIN_URI', plugin_dir_path( __FILE__ ) );
 global $ortho_version;
-$ortho_version = "1.92";
+$ortho_version = "1.85";
 // Admin
 include_once("admin/admin-controller.php");
 // Mail

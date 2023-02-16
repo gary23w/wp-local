@@ -1,44 +1,31 @@
-# WP Local Analytics plugin.
+**Welcome to WP Local Analytics - the plugin that will take your snooping game to the next level!**
 
-*run user analytics within your system and track user data inside your database.*
+### Description
 
-## Installing
+WP Local Analytics is a user analytics plugin that allows you to track your website visitors and store their data right inside your database. With this plugin, you can keep tabs on your users' every move and find out what they're really up to.
 
-Go to the plugin page from the WordPress Plugin Directory website.
+#### Installation
+1. Head over to the WordPress Plugin Directory website and search for WP Local Analytics.
 
-Click the red download button to transfer the plugin Zip file to your computer.
+2. Click the big red download button and save the plugin Zip file to your computer.
+3. Unzip the plugin files.
+4. Connect to your site's server using FTP.
+5. Navigate to the wp-content/plugins directory.
+6. Upload the plugin folder to the wp-content/plugins directory on your web server.
 
-Unzip the plugin files.
-
-All plugins downloaded from the Plugin Directory are in the Zip format. Most operating systems (Windows, Mac, and so on) have built-in tools to open Zip files. After opening the Zip file, extract the directory contained inside the Zip file and put it in a directory on your computer that is easily accessible.
-
-Connect to your site’s server using FTP.
-
-If you have any difficulty connecting to your server, contact your hosting provider and ask for assistance in connecting to your server via FTP.
-
-Navigate to the wp-content folder within the WordPress installation for your website or blog.
-
-The location of your WordPress installation can differ with every hosting provider. Make sure that you know the location before you proceed.
-
-Navigate to the /wp-content/plugins directory.
-
-First, navigate to wp-content. Inside this directory are the plugins and themes directories along with a few others. Navigate to the plugins directory. It is inside this directory that all plugins reside.
-
-Upload the plugin folder to the /wp-content/plugins directory on your web server.
-
-The plugin folder, named for the plugin (for example, if you’re uploading the Gallery plugin, the folder is /gallery) contains all the files for that plugin.
-
-## Usage
-
-Access the admin page
-
-Input SMTP credentials
+#### Usage
+1. Access the admin page for WP Local Analytics.
+2. Input your SMTP credentials.
 
 A cron job will run daily, executing analysis of the daily visitors, then emailing the analytics to whomever you list as a receiver inside the admin form.
 
-## Built With
+#### Built With
 
-* [PHP](https://www.php.net/docs.php) - PHP 8
-* [Jquery](https://google.com) - jQuery
-* [JS](https://google.com) - Javascript
-* [AJAX](https://google.com) - AJAX
+* PHP 8
+* jQuery
+* Javascript
+* AJAX
+
+##### Disclaimer
+
+Please use this plugin responsibly and do not invade your users' privacy. WP Local Analytics is meant to be used for website optimization purposes only.
